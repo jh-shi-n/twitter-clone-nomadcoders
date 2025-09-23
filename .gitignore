@@ -1,3 +1,6 @@
 # Build resources
 node_modules
 package-lock.json
+
+# API 키 노출 방지용
+**/firebase.ts 
