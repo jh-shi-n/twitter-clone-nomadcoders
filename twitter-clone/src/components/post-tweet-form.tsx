@@ -1,5 +1,7 @@
+import { addDoc, collection } from "firebase/firestore"
 import React, { useState } from "react"
 import styled from "styled-components"
+import { auth, db } from "../firebase"
 
 
 const Form = styled.form`
@@ -75,7 +77,28 @@ export default function PostTweetForm() {
             setFile(files[0]) // files 배열에 설정
         }
     }
-    return <Form>
+    const onSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const user = auth.currentUser
+        if(!user || isLoading || tweet === "" || tweet.length > 180) return;
+        
+        try {
+            setLoading(true)
+            // 백엔드 API 구축시에는 이 부분에 API Function + Value를 넣어서 Request를 보낼 것!
+            await addDoc(collection(db, "tweets"), {
+                tweet,
+                createdAt : Date.now(),
+                username: user.displayName || "익명",
+                userId: user.uid,
+            })
+            // 백엔드 API 구축시에는 이 부분에 API Function + Value를 넣어서 Request를 보낼 것!
+        } catch (e) {
+            console.log(e)
+        } finally {
+            setLoading(false)
+        }
+    }
+    return <Form onSubmit={onSubmit}>
         <TextArea 
             rows={5}
             maxLength={180}
@@ -97,4 +120,5 @@ export default function PostTweetForm() {
             value={isLoading ? "포스팅 중..." : "트윗 올리기"}
         />
     </Form>
+    
 }
