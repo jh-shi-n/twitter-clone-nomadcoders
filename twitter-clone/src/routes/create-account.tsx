@@ -74,7 +74,7 @@ export default function CreateAccount(){
         console.log(name, email, password)
     }
     return (<Wrapper>
-                <Title>Log into X </Title>
+                <Title>Join X</Title>
         <Form onSubmit={onSubmit}>
             <Input onChange={onChange} name="name" value={name} placeholder="이름" type="text" required />
             <Input onChange={onChange} name="email" value={email} placeholder="이메일" type="email" required />
