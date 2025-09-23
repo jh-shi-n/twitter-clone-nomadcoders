@@ -20,3 +20,10 @@ https://firebase.google.com/products/storage?hl=ko
 
 ----
 - [1] Routing
+- [2] Firebase Auth
+   - Firebase SDK & Server <- Auth를 위한 모든 작업 수행 (쿠키, 토큰)
+   - Login
+        - 어플리케이션에 로그인 요청
+        - Firebase 로그인 여부 확인 : Firebase가 요청된 Cookie와 Token을 활용하여 서버와 함께 확인
+        - 로그인 완료 전까지 Frontend Loading Screen
+        - 로그인 완료 
