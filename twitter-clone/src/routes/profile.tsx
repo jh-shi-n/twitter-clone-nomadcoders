@@ -1,10 +1,12 @@
 import styled from "styled-components"
-import { auth } from "../firebase"
-import { useState } from "react";
+import { auth, db } from "../firebase"
+import { useEffect, useState } from "react";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage"
 import { updateProfile } from "firebase/auth"
-
+import { query, collection, where, limit, orderBy, getDocs } from "firebase/firestore";
 import { storage } from "../firebase";
+import type { ITweet } from "../components/timeline";
+import Tweet from "../components/tweet";
 
 const Wrapper = styled.div`
     display: flex;
@@ -42,9 +44,16 @@ const Name = styled.span`
     font-size: 22px;
 `
 
+const Tweets = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
 export default function Profile(){
     const user = auth.currentUser
     const [avatar, SetAvatar] = useState(user?.photoURL);
+    const [tweets, SetTweets] = useState<ITweet[]>([]);
     const onAvatarChange = async (e:React.ChangeEvent<HTMLInputElement>) => {
         const {files} = e.target;
         if (!user) return;
@@ -59,6 +68,31 @@ export default function Profile(){
             });
         }
     };
+    const fetchTweets = async() => {
+        const tweetQuery = query(
+            collection(db, "tweets"),
+            where("userId", "==", user?.uid), // 해당 부분은 파이어베이스 -> 색인에 업데이트 해주어야함
+            orderBy("createdAt", "desc"),
+            limit(25)
+        );
+        const snapshot = await getDocs(tweetQuery);
+        const tweets = snapshot.docs.map(doc => {
+            const {tweet, createdAt, userId, username, photo} = doc.data();
+            return {
+                tweet, 
+                createdAt, 
+                userId, 
+                username, 
+                photo,
+                id: doc.id
+            }
+        });
+        SetTweets(tweets)
+
+    };
+    useEffect(() => {
+        fetchTweets()
+    }, []) // 빈 dependency array를 추가하여 임시로 계속된 요청 차단
     return <Wrapper>
         <AvatarUpload htmlFor="avatar">
             {avatar ? (<AvatarImg src={avatar} /> 
@@ -80,5 +114,8 @@ export default function Profile(){
         <Name>
             {user?.displayName ? user.displayName : "익명"}
         </Name>
+        <Tweets>
+            {tweets.map(tweet => <Tweet key={tweet.id} {...tweet} />)}
+        </Tweets>
     </Wrapper>
 }
