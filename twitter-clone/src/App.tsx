@@ -9,6 +9,7 @@ import reset from "styled-reset"
 import { useState, useEffect } from "react"
 import LoadingScreen from "./components/loading-screen.tsx"
 import { auth } from "./firebase"
+import { styled } from "styled-components";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,12 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
+const Wrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+`;
+
 function App() {
   // 로딩 스크린 - Firebase가 로그인 작업 진행 시
   const [ isLoading, setLoading ] = useState(true);
@@ -66,8 +73,10 @@ function App() {
 
   return ( 
     <> 
-      <GlobalStyles />
-      {isLoading ? <LoadingScreen/> : <RouterProvider router = {router} /> } 
+      <Wrapper>
+        <GlobalStyles />
+        {isLoading ? <LoadingScreen/> : <RouterProvider router = {router} /> } 
+      </Wrapper>
     </>
   )
 }
