@@ -17,3 +17,6 @@ https://firebase.google.com/products/auth?hl=ko
 - Cloud Storage
 Cloud Storage는 사진, 동영상 등의 사용자 제작 콘텐츠를 빠르고 손쉽게 저장하고 제공할 수 있도록 설계되었습니다.
 https://firebase.google.com/products/storage?hl=ko
+
+----
+- [1] Routing
