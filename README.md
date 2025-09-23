@@ -198,4 +198,12 @@ https://firebase.google.com/products/storage?hl=ko
    allow read: if true;
  
 
+- API Key Security
+  - https://console.cloud.google.com/apis/credentials
+
+  - 사용자 인증 정보 -> Browser Key
+  - API 호출 방식을 변경할 수 있음
+  - 허용 웹사이트 수정을 통해 API에 접근가능한 도메인을 막을 수 있음.
+  - 개발시에만 localhost를 추가
+   ![alt text](image.png)
 
