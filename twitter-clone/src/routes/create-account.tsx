@@ -1,5 +1,8 @@
 import { styled } from "styled-components";
 import { useState } from "react"
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../firebase"
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
     height: 100%;
@@ -43,7 +46,7 @@ const Error = styled.span`
 
 
 export default function CreateAccount(){
-
+    const navigate = useNavigate()
     const [isLoading, setLoading] = useState(false);
     const [name, setName] = useState(""); // 상태 확인용 (1) - name
     const [email, setEmail] = useState(""); // 상태 확인용 (2) - email
@@ -59,13 +62,21 @@ export default function CreateAccount(){
             setPassword(value)
         }
     }
-    const onSubmit = (e : React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+            setLoading(true)
+            if (isLoading || name === "" || email === "" || password === "") return;
             // Create An Account
             // Set the name of User
             // Redirect to the homepage
+            const credentials = await createUserWithEmailAndPassword(auth, email, password) // 성공시 자격증명 Get
+            console.log(credentials.user);
 
+            await updateProfile(credentials.user, { // 프로필 업데이트
+                displayName : name,
+            });
+            navigate("/") // 작동과정 : Firebase 가입 -> 자격증명생성 -> 자격증명이용 Profile Update -> Home
         } catch (e) {
             // setError
         } finally {

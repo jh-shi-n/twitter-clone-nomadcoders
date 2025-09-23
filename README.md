@@ -47,3 +47,50 @@ https://firebase.google.com/products/storage?hl=ko
          Auth.onAuthStateChanged()
          사용자의 로그인 상태 변경에 대한 관찰자를 추가합니다.
 
+      - CreateUserWithEmailAndPassword
+         (요구 : auth, email, password)
+         - auth = firebase init 후 getAuth()를 통해 생성된 변수
+         - email, password : 입력값
+         - return Usercredential
+         - userCredential 예시 Form
+         
+         ```json 
+         {
+            "operationType": "signIn",
+            "providerId": null,
+            "user": {
+               "uid": "VA4J0AnIeRcs3PjrMLFieeZPm8v2",
+               "email": "sadfas@naver.com",
+               "emailVerified": false,
+               "displayName": null,
+               "phoneNumber": null,
+               "photoURL": null,
+               "isAnonymous": false,
+               "metadata": {
+                  "createdAt": "1758602424055",
+                  "lastLoginAt": "1758602424055",
+                  "lastSignInTime": "Tue, 23 Sep 2025 04:40:24 GMT",
+                  "creationTime": "Tue, 23 Sep 2025 04:40:24 GMT"
+               },
+               "providerData": [
+                  {
+                  "providerId": "firebase",
+                  "email": "sadfas@naver.com"
+                  }
+               ],
+               "stsTokenManager": {
+                  "refreshToken": "AMf-vBz-2IkcSgS...CnqIacA",
+                  "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6...QNo5ChD6LyEqHTA",
+                  "expirationTime": 1758606024482
+               }
+            },
+            "_tokenResponse": {
+               "email": "sadfas@naver.com",
+               "expiresIn": "3600",
+               "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6...QNo5ChD6LyEqHTA",
+               "kind": "identitytoolkit#SignupNewUserResponse",
+               "localId": "VA4J0AnIeRcs3PjrMLFieeZPm8v2",
+               "refreshToken": "AMf-vBz-2IkcSgS...CnqIacA"
+            }
+            }
+            ```        
