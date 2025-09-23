@@ -1,7 +1,9 @@
-import { addDoc, collection } from "firebase/firestore"
+import { addDoc, collection, updateDoc } from "firebase/firestore"
 import React, { useState } from "react"
 import styled from "styled-components"
-import { auth, db } from "../firebase"
+import { auth, db, storage } from "../firebase"
+import { auth_v8, db_v8, storage_v8 } from "../firebase"
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 
 
 const Form = styled.form`
@@ -84,14 +86,46 @@ export default function PostTweetForm() {
         
         try {
             setLoading(true)
+            // Document Add & set
             // 백엔드 API 구축시에는 이 부분에 API Function + Value를 넣어서 Request를 보낼 것!
-            await addDoc(collection(db, "tweets"), {
+            // 방식 (1) - firebase v9버전
+            const doc = await addDoc(collection(db, "tweets"), {
                 tweet,
                 createdAt : Date.now(),
                 username: user.displayName || "익명",
                 userId: user.uid,
             })
-            // 백엔드 API 구축시에는 이 부분에 API Function + Value를 넣어서 Request를 보낼 것!
+
+            if(file){
+                const locationRef = ref(storage, `tweets/${user.uid}-${user.
+                                    displayName}/${doc.id}`);
+                const result = await uploadBytes(locationRef, file) 
+                const url = await getDownloadURL(result.ref)
+                await updateDoc(doc, {
+                    photo: url,
+                });
+            }
+
+            // 방식 (2) - firebase v8버전
+            // let newTweet = {
+            //         tweet,
+            //         createdAt : Date.now(),
+            //         username: user.displayName || "익명",
+            //         userId: user.uid,
+            //     }
+            // const docRef = await db_v8.collection("tweets").add(newTweet);
+
+            // if(file) {
+            //     const storageRef = storage_v8.ref(`tweets/${user.uid}-${user.displayName}/${docRef.id}`);
+            //     const snapshot = await storageRef.put(file);
+            //     const url = await snapshot.ref.getDownloadURL();
+                
+            //     // Firestore 문서 업데이트
+            //     await docRef.update({
+            //         photo: url,
+            //     });
+            // }
+            // 백엔드 API 구축시에는 이 부분에 API Function + Value를 넣어서 Request를 보낼 것!  
         } catch (e) {
             console.log(e)
         } finally {
