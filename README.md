@@ -93,4 +93,13 @@ https://firebase.google.com/products/storage?hl=ko
                "refreshToken": "AMf-vBz-2IkcSgS...CnqIacA"
             }
             }
-            ```        
+         ``` 
+      - Firebase Error (Authenticate)
+         - 회원가입, 로그인 시 발생하는 에러
+         - 오류 코드는 항상 체크할 것!
+         ```json
+         auth/email-already-in-use Firebase: Error (auth/email-already-in-use).
+         ``` 
+         - auth/wrong-password
+         - auth/invalid-credential
+         - 

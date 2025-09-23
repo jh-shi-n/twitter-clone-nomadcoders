@@ -9,6 +9,7 @@ export default function ProtectedRoute({
     children:React.ReactNode
 }) {
     const user = auth.currentUser; // Firebase에게 현재 브라우저에 로그인된 유저의 상태 확인 (실제 User or Null)
+    
     console.log("Protected Route")
     console.log(user)
     if (user === null){
