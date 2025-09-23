@@ -11,6 +11,7 @@ import {
     Title, 
     Error
  } from "../components/auth-components";
+import GithubButton from "../components/github-btn";
 
 
 export default function CreateAccount(){
@@ -97,6 +98,7 @@ export default function CreateAccount(){
             이미 계정이 있나요?{" "}
             <Link to="/login"> 로그인 &rarr;</Link>
         </Switcher>
+        <GithubButton/>
     </Wrapper>
     );
 }

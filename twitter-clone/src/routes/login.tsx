@@ -11,6 +11,7 @@ import {
     Title, 
     Error
  } from "../components/auth-components";
+import GithubButton from "../components/github-btn";
 
 
 
@@ -76,6 +77,7 @@ export default function CreateAccount(){
             아직 계정이 없나요? {" "}
             <Link to="/create-account"> 신규 가입 &rarr;</Link>
         </Switcher>
+        <GithubButton/>
     </Wrapper>
     );
 }
