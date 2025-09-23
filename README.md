@@ -103,3 +103,99 @@ https://firebase.google.com/products/storage?hl=ko
          - auth/wrong-password
          - auth/invalid-credential
          - 
+
+
+- Firebase Hosting (정적 웹사이트 배포)
+- firebase init
+- 배포 위치 'dist'
+- package.json 수정
+   ```json
+   "scripts": {
+      "dev": "vite",
+      ...
+      "predeploy": "npm run build",
+      "deploy": "firebase deploy"
+   },
+   ```
+- npm dev deploy
+
+- Firebase database security rules
+  - 백엔드가 없을 경우, 리버스엔지니어링을 통해 해킹 가능
+  - rule 설정을 통해 cloud Firestore의 접근 및 허용/거부 설정 가능
+
+  -  기본 규칙 페이지 
+      ```
+      rules_version = '2';
+
+      service cloud.firestore {
+         match /databases/{database}/documents {
+               }
+      ```
+
+   - 권한 부여 -> request.auth가 비어있지않을경우 (누구나 권한이 있을 경우)
+      ```
+      match / {document=**} {
+         allow read: if request.auth != null
+      }
+
+      ```
+
+   - 특정 문서에 권한 부여 -> request.auth가 비어있지않을경우 (누구나 권한이 있을 경우) // allow write일 경우, read 권한이 없어 아무런 트윗도 안보임
+      ```
+      match /tweets/{doc} {
+         allow read: if request.auth != null
+      }
+
+      ```
+
+   - 특정 문서에 권한 부여 및 쓰기 가능 -> \
+      request.auth가 비어있지않을경우 (누구나 권한이 있을 경우) // allow write일 경우, read 권한이 없어 아무런 트윗도 안보임
+      ```
+      match /tweets/{doc} {
+         allow read, create : if request.auth != null
+      }
+
+      ```
+   - 허가받지않은 수정, 업데이트, 삭제에 대한 보호 (접근 유저와 문서보유유저 동일 시)\
+      resource -> document의미
+      ```
+      match /tweets/{doc} {
+         allow read, create : if request.auth != null
+         allow delete, update : if request.auth.uid == resource.data.userId
+      }
+
+      ```
+
+- Firebase storage security rules
+   - 기본 형태
+   ```
+   rules_version = '2';
+         service firebase.storage {
+         match /b/{bucket}/o {
+
+    ```
+
+   - 규칙 추가 (auth여부 + 업로드 파일의 용량 2mb 이하)
+   ```
+      allow read : if request.auth != null
+      allow write : if request.auth != null && resource.size < 2 * 1024 * 1024 && resource.contentType == "image/png"
+   ```
+
+- 이외 정보
+   - Cloud Firestore 보안 규칙 : 
+   https://firebase.google.com/docs/firestore/security/get-started
+
+   - Cloud Storage 보안 규칙 :
+   https://firebase.google.com/docs/storage/security
+
+   - Storage 에 이미지 파일만 올릴 수 있도록 규칙 적용 \
+   allow write에 request.resource.contentType.matches('image/.*') 추가하기
+      ```
+      allow write: if request.auth != null && request.resource.size < 2 * 1024 * 1024 && request.resource.contentType.matches('image/.*')
+      ```
+
+   - 읽기 권한 모두 허용 \
+   allow read: if true;
+ 
+
+
