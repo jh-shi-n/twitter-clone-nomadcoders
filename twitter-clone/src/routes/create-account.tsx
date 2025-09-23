@@ -43,11 +43,11 @@ export default function CreateAccount(){
             const credentials = await createUserWithEmailAndPassword(auth, email, password) // 성공시 자격증명 Get
             console.log(credentials.user);
 
-            await updateProfile(credentials.user, { // 프로필 업데이트
+            await updateProfile(credentials.user, { // 프로필 업데이트, Avatar URL도 설정 가능
                 displayName : name,
             });
 
-            // 이 사이에서 백엔드 함수를 통해 가입 유저 관련 정보를 주고받을 수 있다.
+            // 이 사이에서 백엔드 Function를 통해 가입 유저 관련 정보를 DB와 주고받을 수 있다.
 
             navigate("/") // 작동과정 : Firebase 가입 -> 자격증명생성 -> 자격증명이용 Profile Update -> Home
         } catch (e) {
