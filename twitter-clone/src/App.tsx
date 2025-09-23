@@ -10,20 +10,20 @@ import { useState, useEffect } from "react"
 import LoadingScreen from "./components/loading-screen.tsx"
 import { auth } from "./firebase"
 import { styled } from "styled-components";
+import ProtectedRoute from "./components/protected-route.tsx"
 
 const router = createBrowserRouter([
   {
     path : "/",
-    element : <Layout />, // Login User (인증된 사용자) 만 사용하게 하고싶을때 구분
+    element : <ProtectedRoute><Layout /></ProtectedRoute>, // Login User (인증된 사용자) 만 사용하게 하고싶을때 구분
     children : [
       {
         path: "",
-        element: <Home />,
-        
+        element : <Home />,
       },
       {
         path: "profile",
-        element: <Profile />,
+        element:  <Profile />
       }
     ]
   },
