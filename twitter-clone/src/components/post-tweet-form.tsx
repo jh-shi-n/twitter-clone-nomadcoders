@@ -2,7 +2,7 @@ import { addDoc, collection, updateDoc } from "firebase/firestore"
 import React, { useState } from "react"
 import styled from "styled-components"
 import { auth, db, storage } from "../firebase"
-import { auth_v8, db_v8, storage_v8 } from "../firebase"
+// import { auth_v8, db_v8, storage_v8 } from "../firebase"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 
 
